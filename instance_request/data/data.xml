@@ -5,6 +5,15 @@
             <field name="name">FirstInstance</field>
             <field name="limit_date">2023-03-17</field>
         </record>
+         <record model='odoo.version' id="odoo_version_14">
+            <field name="name">14.0</field>
+        </record>
+        <record model='odoo.version' id="odoo_version_15">
+            <field name="name">15.0</field>
+        </record>
+        <record model='odoo.version' id="odoo_version_16">
+            <field name="name">16.0</field>
+        </record>
     </data>
 
 
