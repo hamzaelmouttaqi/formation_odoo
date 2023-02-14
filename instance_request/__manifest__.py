@@ -9,7 +9,8 @@ Instance Request """,
     'depends' : ['base'],
     'data': ['data/data.xml',
              'security/ir.model.access.csv',
-             'views/instance_request.xml'
+             'views/instance_request.xml',
+             'views/odoo_version.xml'
     ],
     'application': True,
     'license': 'LGPL-3',

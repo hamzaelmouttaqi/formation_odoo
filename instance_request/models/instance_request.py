@@ -8,7 +8,7 @@ class InstanceRequest(models.Model):
     adress_ip = fields.Char(string='Adress Ip')
     cpu = fields.Char(string='cpu')
     ram = fields.Char(string='ram')
-    disk = fields.Char(string='risk')
+    disk = fields.Char(string='disk')
     url = fields.Char(string='url')
     active = fields.Boolean(string='Is_Active',default='True')
     state = fields.Selection([('Brouillon','Brouillon'),('Soumise','Soumise'), ('En traitement','En traitement'),

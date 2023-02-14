@@ -1,13 +1,13 @@
 <odoo>
   <data>
     <record model="ir.ui.view" id="instance_request_search">
-      <field name="name">instance_request list</field>
+      <field name="name">instance_request search</field>
       <field name="model">instance.request</field>
       <field name="arch" type="xml">
         <search>
           <field name="name"/>
-          <field name="limit_date"/>
-
+          <field name="adress_ip"/>
+          <field name="state"/>
         </search>
       </field>
     </record>
@@ -16,8 +16,13 @@
       <field name="model">instance.request</field>
       <field name="arch" type="xml">
         <tree>
+          <field name="create_date"/>
           <field name="name"/>
           <field name="limit_date"/>
+          <field name="cpu"/>
+          <field name="ram"/>
+          <field name="disk"/>
+          <field name="state"/>
         </tree>
       </field>
     </record>
@@ -43,7 +48,7 @@
     <!-- actions opening views on models -->
 
     <record model="ir.actions.act_window" id="instance_request_action">
-      <field name="name">test window</field>
+      <field name="name">Instence Request</field>
       <field name="res_model">instance.request</field>
       <field name="view_mode">tree,form</field>
     </record>

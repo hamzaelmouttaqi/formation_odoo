@@ -1,0 +1,55 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="odoo_version_search">
+      <field name="name">odoo_version search</field>
+      <field name="model">odoo.version</field>
+      <field name="arch" type="xml">
+        <search>
+           <field name="create_date"/>
+          <field name="create_uid"/>
+          <field name="version"/>
+        </search>
+      </field>
+    </record>
+    <record model="ir.ui.view" id="odoo_version_list">
+      <field name="name">odoo_version_list</field>
+      <field name="model">odoo.version</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="create_date"/>
+          <field name="create_uid"/>
+          <field name="version"/>
+
+        </tree>
+      </field>
+    </record>
+    <record model="ir.ui.view" id="odoo_version_form">
+      <field name="name">odoo_version_form</field>
+      <field name="model">odoo.version</field>
+      <field name="arch" type="xml">
+        <form string="demande version">
+          <sheet>
+
+              <group>
+                <field name="name"/>
+              </group>
+
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="odoo_version_action">
+      <field name="name">Odoo Version</field>
+      <field name="res_model">odoo.version</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="odoo_version"
+              id="odoo_version_menu_root"
+              action="odoo_version_action"
+    />
+  </data>
+</odoo>
