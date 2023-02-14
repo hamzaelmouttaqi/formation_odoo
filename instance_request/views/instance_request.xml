@@ -52,6 +52,5 @@
               id="instance_request_menu_root"
               action="instance_request_action"
     />
-
   </data>
 </odoo>

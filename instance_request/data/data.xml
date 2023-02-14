@@ -1,9 +1,13 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
     <data>
-        <record model='instance.request' id="instance_data_id">
+        <record model='instance.request' id="instance_data_id1">
             <field name="name">FirstInstance</field>
             <field name="limit_date">2023-03-17</field>
+        </record>
+        <record model='instance.request' id="instance_data_id2">
+            <field name="name">SecondInstance</field>
+            <field name="limit_date">2023-03-15</field>
         </record>
          <record model='odoo.version' id="odoo_version_14">
             <field name="name">14.0</field>
