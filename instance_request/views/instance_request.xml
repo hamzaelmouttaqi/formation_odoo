@@ -1,0 +1,57 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="instance_request_search">
+      <field name="name">instance_request list</field>
+      <field name="model">instance.request</field>
+      <field name="arch" type="xml">
+        <search>
+          <field name="name"/>
+          <field name="limit_date"/>
+
+        </search>
+      </field>
+    </record>
+    <record model="ir.ui.view" id="instance_request_list">
+      <field name="name">instance_request_list</field>
+      <field name="model">instance.request</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="limit_date"/>
+        </tree>
+      </field>
+    </record>
+    <record model="ir.ui.view" id="instance_request_form">
+      <field name="name">instance_request_form</field>
+      <field name="model">instance.request</field>
+      <field name="arch" type="xml">
+        <form string="demande">
+          <sheet>
+            <group>
+              <group>
+                <field name="name"/>
+              </group>
+              <group>
+                <field name="limit_date"/>
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="instance_request_action">
+      <field name="name">test window</field>
+      <field name="res_model">instance.request</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="instance_request"
+              id="instance_request_menu_root"
+              action="instance_request_action"
+    />
+
+  </data>
+</odoo>

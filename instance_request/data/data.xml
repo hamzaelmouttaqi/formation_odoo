@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record model='instance.request' id="instance_data_id">
+            <field name="name">FirstInstance</field>
+            <field name="limit_date">2023-03-17</field>
+        </record>
+    </data>
+
+
+</odoo>
