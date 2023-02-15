@@ -1,63 +1,124 @@
 <odoo>
-  <data>
-    <record model="ir.ui.view" id="instance_request_search">
-      <field name="name">instance_request search</field>
-      <field name="model">instance.request</field>
-      <field name="arch" type="xml">
-        <search>
-          <field name="name"/>
-          <field name="adress_ip"/>
-          <field name="state"/>
-        </search>
-      </field>
-    </record>
-    <record model="ir.ui.view" id="instance_request_list">
-      <field name="name">instance_request_list</field>
-      <field name="model">instance.request</field>
-      <field name="arch" type="xml">
-        <tree>
-          <field name="create_date"/>
-          <field name="name"/>
-          <field name="limit_date"/>
-          <field name="cpu"/>
-          <field name="ram"/>
-          <field name="disk"/>
-          <field name="state"/>
-        </tree>
-      </field>
-    </record>
-    <record model="ir.ui.view" id="instance_request_form">
-      <field name="name">instance_request_form</field>
-      <field name="model">instance.request</field>
-      <field name="arch" type="xml">
-        <form string="demande">
-          <sheet>
-            <group>
-              <group>
-                <field name="name"/>
-              </group>
-              <group>
-                <field name="limit_date"/>
-              </group>
-            </group>
-          </sheet>
-        </form>
-      </field>
-    </record>
+    <data>
+        <record model="ir.ui.view" id="instance_request_search">
+            <field name="name">instance_request search</field>
+            <field name="model">instance.request</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="adress_ip"/>
+                    <field name="state"/>
+                </search>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="instance_request_list">
+            <field name="name">instance_request_list</field>
+            <field name="model">instance.request</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="create_date"/>
+                    <field name="name"/>
+                    <field name="limit_date"/>
+                    <field name="cpu"/>
+                    <field name="ram"/>
+                    <field name="disk"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="instance_request_form1">
+            <field name="name">instance_request_form</field>
+            <field name="model">instance.request</field>
+            <field name="arch" type="xml">
+                <form string="demande">
+                    <header>
+                        <button string="brouillon" type="object" name="action_brouillon" states="soumise,traitee"
+                                class="oe_highlight"/>
+                        <button string="soumise" type="object" name="action_soumise" states="brouillon,en_traitement"
+                                class="oe_highlight"/>
+                        <button string="en_traitement" type="object" name="action_en_traitement"
+                                states="soumise,traitee" class="oe_highlight"/>
+                        <button string="traitee" type="object" name="action_traitee" states="en_traitement"
+                                class="oe_highlight"/>
+                        <field name="state" widget="statusbar" options="{'clickable' : '1'}"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" attrs="{'readonly':[('state','=','traitee')]}" required="1"/>
+                            </group>
+                            <group>
+                                <field name="limit_date" attrs="{'readonly':[('state','=','traitee')]}" required="1"/>
+                            </group>
+                            <group>
+                                <field attrs="{'readonly':[('state','=','traitee')],'invisible':[('state','!=','traitee')]}"
+                                       name="adress_ip"/>
+                            </group>
+                            <group>
+                                <field name="state"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
-    <!-- actions opening views on models -->
+        <!-- actions opening views on models -->
 
-    <record model="ir.actions.act_window" id="instance_request_action">
-      <field name="name">Instence Request</field>
-      <field name="res_model">instance.request</field>
-      <field name="view_mode">tree,form</field>
-    </record>
+        <record model="ir.actions.act_window" id="instance_request_action">
+            <field name="name">Instence Request</field>
+            <field name="res_model">instance.request</field>
+            <field name="domain">[('create_uid','=',uid)]</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+      <record id="instance_request_action_server" model="ir.actions.server">
+            <field name="name">Traitee</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="instance_request.model_instance_request"/>
+            <field name="binding_model_id" ref="instance_request.model_instance_request"/>
+            <field name="state">code</field>
+            <field name="code">records.action_traitee()</field>
+      </record>
+        <record model="ir.actions.act_window" id="instance_request_action_a_valide">
+            <field name="name">A Valider</field>
+            <field name="res_model">instance.request</field>
+            <field name="domain">['|',
+    ('state','=','soumise'),('state','=','en_traitement')]</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record model="ir.actions.act_window" id="instance_request_action_all">
+            <field name="name">Toutes les demandes</field>
+            <field name="res_model">instance.request</field>
+            <field name="view_mode">tree,form</field>
+        </record>
 
-    <menuitem name="Mes demandes"
-              id="instance1"
-              parent="instance_request_menu_root"
-              action="instance_request_action"
-              sequence="10"
-    />
-  </data>
+        <menuitem name="instance_request"
+                  id="instance_request_menu_root"
+                  sequence="10"
+
+        >
+            <menuitem name="Mes demandes"
+                      id="instance1"
+                      action="instance_request_action"
+            />
+            <menuitem name="Responsables"
+                      id="responsable_id"
+            >
+                <menuitem
+                         id="valid_id" action="instance_request_action_a_valide"/>
+                <menuitem
+                         id="all_id" action="instance_request_action_all"/>
+            </menuitem>
+            <menuitem name="Analyse"
+                      id="analyse_id"
+                      action="instance_request_action"
+            />
+            <menuitem name="Configuration"
+                      id="configuration"
+                      action="instance_request_action"
+            />
+        </menuitem>
+
+
+    </data>
 </odoo>

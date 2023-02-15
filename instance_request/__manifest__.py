@@ -9,7 +9,6 @@ Instance Request """,
     'depends': ['base'],
     'data': ['data/data.xml',
              'security/ir.model.access.csv',
-             'views/menu.xml',
              'views/instance_request.xml',
              'views/odoo_version.xml',
 

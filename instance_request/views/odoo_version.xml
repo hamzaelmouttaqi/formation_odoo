@@ -49,7 +49,6 @@
 
     <menuitem name="odoo_version"
               id="odoo_version_menu_root"
-              parent="instance_request_menu_root"
               action="odoo_version_action"
     />
 

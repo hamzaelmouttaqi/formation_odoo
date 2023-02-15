@@ -11,8 +11,30 @@ class InstanceRequest(models.Model):
     disk = fields.Char(string='disk')
     url = fields.Char(string='url')
     active = fields.Boolean(string='Is_Active',default='True')
-    state = fields.Selection([('Brouillon','Brouillon'),('Soumise','Soumise'), ('En traitement','En traitement'),
-                              ('Traitée','Traitée')],string='State',default='Brouillon')
+    state = fields.Selection(
+        [
+            ("brouillon", "Brouillon"),
+            ("soumise", "Soumise"),
+            ("en_traitement", "En traitement"),
+            ("traitee", "Traitée")
+        ],
+        default='brouillon', )
     limit_date = fields.Date(string='Limit Date')
     treat_date=fields.Date(string='Treat Date')
     treat_duration=fields.Float(string='Treat Duration')
+
+    def action_brouillon(self):
+        for record in self:
+            record.state="brouillon"
+
+    def action_soumise(self):
+        for record in self:
+            record.state="soumise"
+
+    def action_en_traitement(self):
+        for record in self:
+            record.state="en_traitement"
+
+    def action_traitee(self):
+        for record in self:
+            record.state="traitee"
