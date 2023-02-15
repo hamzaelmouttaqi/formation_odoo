@@ -1,0 +1,13 @@
+<odoo>
+    <data>
+            <menuitem name="instance_request"
+                      id="instance_request_menu_root"
+                      sequence="10"
+            />
+            <menuitem name="Responsables "
+                      id="instance2"
+                      parent="instance_request_menu_root"
+                      sequence="10"
+            />
+    </data>
+</odoo>

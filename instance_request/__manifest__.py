@@ -1,17 +1,19 @@
 {
-    'name' : 'Instance Request',
-    'version' : '16.0',
+    'name': 'Instance Request',
+    'version': '16.0',
     'summary': 'Instance Request',
     'sequence': 10,
     'description': """
 Instance Request """,
     'website': 'https://www.odoo.com/app/instance_request',
-    'depends' : ['base'],
+    'depends': ['base'],
     'data': ['data/data.xml',
              'security/ir.model.access.csv',
+             'views/menu.xml',
              'views/instance_request.xml',
-             'views/odoo_version.xml'
-    ],
+             'views/odoo_version.xml',
+
+             ],
     'application': True,
     'license': 'LGPL-3',
 }

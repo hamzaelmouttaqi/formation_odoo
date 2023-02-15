@@ -53,9 +53,11 @@
       <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem name="instance_request"
-              id="instance_request_menu_root"
+    <menuitem name="Mes demandes"
+              id="instance1"
+              parent="instance_request_menu_root"
               action="instance_request_action"
+              sequence="10"
     />
   </data>
 </odoo>
