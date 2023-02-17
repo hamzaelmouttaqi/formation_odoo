@@ -1,10 +1,13 @@
-from odoo import models, fields
+# -*- coding utf-8 -*-
+from odoo import models, fields ,api
+import datetime
 
 class InstanceRequest(models.Model):
     _name = 'instance.request'
     _description = 'demance d_instance'
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
-    name = fields.Char(string='Designation')
+    name = fields.Char(string='Designation',tracking=True)
     adress_ip = fields.Char(string='Adress Ip')
     cpu = fields.Char(string='cpu')
     ram = fields.Char(string='ram')
@@ -13,13 +16,13 @@ class InstanceRequest(models.Model):
     active = fields.Boolean(string='Is_Active',default='True')
     state = fields.Selection(
         [
-            ("brouillon", "Brouillon"),
-            ("soumise", "Soumise"),
-            ("en_traitement", "En traitement"),
-            ("traitee", "Traitée")
+            ("brouillon", "Draft"),
+            ("soumise", "Submitted"),
+            ("en_traitement", "In Process"),
+            ("traitee", "Done")
         ],
-        default='brouillon', )
-    limit_date = fields.Date(string='Limit Date')
+        default='brouillon',tracking=True)
+    limit_date = fields.Date(string='Limit Date',tracking=True)
     treat_date=fields.Date(string='Treat Date')
     treat_duration=fields.Float(string='Treat Duration')
 
@@ -38,3 +41,11 @@ class InstanceRequest(models.Model):
     def action_traitee(self):
         for record in self:
             record.state="traitee"
+
+    @api.model
+    def update_sub(self):
+        all_records = self.search([])
+        for record in all_records:
+            jours_restants = (record.limit_date - datetime.date.today()).days
+            if jours_restants <= 5 and record.state == "brouillon":
+                record.state = "soumise"

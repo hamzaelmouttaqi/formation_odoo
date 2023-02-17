@@ -6,9 +6,11 @@
     'description': """
 Instance Request """,
     'website': 'https://www.odoo.com/app/instance_request',
-    'depends': ['base'],
+    'depends': ['base','mail'],
     'data': ['data/data.xml',
+             'security/security.xml',
              'security/ir.model.access.csv',
+
              'views/instance_request.xml',
              'views/odoo_version.xml',
 

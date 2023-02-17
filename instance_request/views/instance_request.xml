@@ -1,3 +1,4 @@
+<?xml version='1.0' encoding='utf-8'?>
 <odoo>
     <data>
         <record model="ir.ui.view" id="instance_request_search">
@@ -15,7 +16,7 @@
             <field name="name">instance_request_list</field>
             <field name="model">instance.request</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree >
                     <field name="create_date"/>
                     <field name="name"/>
                     <field name="limit_date"/>
@@ -32,13 +33,15 @@
             <field name="arch" type="xml">
                 <form string="demande">
                     <header>
-                        <button string="brouillon" type="object" name="action_brouillon" states="soumise,traitee"
+                        <button string="Draft" type="object" name="action_brouillon" states="soumise,traitee"
+                                class="oe_highlight" groups="instance_request.group_instance_request_user"/>
+                        <button string="Submitted" type="object" name="action_soumise" states="brouillon,en_traitement"
+                                class="oe_highlight" groups="instance_request.group_instance_request_user"/>
+                        <button string="In Process" type="object" name="action_en_traitement"
+                                states="soumise,traitee" groups="instance_request.group_instance_request_resp"
                                 class="oe_highlight"/>
-                        <button string="soumise" type="object" name="action_soumise" states="brouillon,en_traitement"
-                                class="oe_highlight"/>
-                        <button string="en_traitement" type="object" name="action_en_traitement"
-                                states="soumise,traitee" class="oe_highlight"/>
-                        <button string="traitee" type="object" name="action_traitee" states="en_traitement"
+                        <button string="Done" type="object" groups="instance_request.group_instance_request_resp"
+                                name="action_traitee" states="en_traitement"
                                 class="oe_highlight"/>
                         <field name="state" widget="statusbar" options="{'clickable' : '1'}"/>
                     </header>
@@ -46,19 +49,29 @@
                         <group>
                             <group>
                                 <field name="name" attrs="{'readonly':[('state','=','traitee')]}" required="1"/>
+                                <field name="cpu"></field>
+                                <field name="ram" />
+                                <field name="disk" />
+                                <field name="url" />
+                                <field attrs="{'readonly':[('state','=','traitee')],'invisible':[('state','!=','traitee')]}"
+                                       name="adress_ip" />
                             </group>
                             <group>
                                 <field name="limit_date" attrs="{'readonly':[('state','=','traitee')]}" required="1"/>
+                                 <field name="treat_date" attrs="{'readonly':[('state','=','traitee')]}"></field>
+                                <field name="treat_duration" attrs="{'readonly':[('state','=','traitee')]}" />
                             </group>
-                            <group>
-                                <field attrs="{'readonly':[('state','=','traitee')],'invisible':[('state','!=','traitee')]}"
-                                       name="adress_ip"/>
-                            </group>
-                            <group>
-                                <field name="state"/>
-                            </group>
+
+
+
+
                         </group>
                     </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
                 </form>
             </field>
         </record>
@@ -69,21 +82,23 @@
             <field name="name">Instence Request</field>
             <field name="res_model">instance.request</field>
             <field name="domain">[('create_uid','=',uid)]</field>
+            <field name="context">{'default_cpu':'12 '}</field>
             <field name="view_mode">tree,form</field>
         </record>
-      <record id="instance_request_action_server" model="ir.actions.server">
+        <record id="instance_request_action_server" model="ir.actions.server">
             <field name="name">Traitee</field>
             <field name="type">ir.actions.server</field>
             <field name="model_id" ref="instance_request.model_instance_request"/>
             <field name="binding_model_id" ref="instance_request.model_instance_request"/>
             <field name="state">code</field>
             <field name="code">records.action_traitee()</field>
-      </record>
+        </record>
         <record model="ir.actions.act_window" id="instance_request_action_a_valide">
             <field name="name">A Valider</field>
             <field name="res_model">instance.request</field>
             <field name="domain">['|',
-    ('state','=','soumise'),('state','=','en_traitement')]</field>
+                ('state','=','soumise'),('state','=','en_traitement')]
+            </field>
             <field name="view_mode">tree,form</field>
         </record>
         <record model="ir.actions.act_window" id="instance_request_action_all">
@@ -91,6 +106,7 @@
             <field name="res_model">instance.request</field>
             <field name="view_mode">tree,form</field>
         </record>
+
 
         <menuitem name="instance_request"
                   id="instance_request_menu_root"
@@ -100,9 +116,11 @@
             <menuitem name="Mes demandes"
                       id="instance1"
                       action="instance_request_action"
+                      groups="instance_request.group_instance_request_user"
             />
             <menuitem name="Responsables"
                       id="responsable_id"
+                      groups="instance_request.group_instance_request_resp"
             >
                 <menuitem
                          id="valid_id" action="instance_request_action_a_valide"/>
@@ -112,10 +130,11 @@
             <menuitem name="Analyse"
                       id="analyse_id"
                       action="instance_request_action"
+                      groups="instance_request.group_instance_request_user"
             />
             <menuitem name="Configuration"
-                      id="configuration"
-                      action="instance_request_action"
+                      id="menu_configuration"
+                      groups="instance_request.group_instance_request_admin"
             />
         </menuitem>
 
