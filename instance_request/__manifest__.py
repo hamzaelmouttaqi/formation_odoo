@@ -8,6 +8,7 @@ Instance Request """,
     'website': 'https://www.odoo.com/app/instance_request',
     'depends': ['base','mail'],
     'data': ['data/data.xml',
+             'data/mail_template.xml',
              'security/security.xml',
              'security/ir.model.access.csv',
 

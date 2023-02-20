@@ -37,15 +37,23 @@ class InstanceRequest(models.Model):
     def action_en_traitement(self):
         for record in self:
             record.state="en_traitement"
+            template = self.env.ref("instance_request.instance_request_creation_progress")
+            template.send_mail(record.id,
+                               email_values={'email_to': record.create_uid.email, 'email_from': self.env.user.email})
 
     def action_traitee(self):
         for record in self:
             record.state="traitee"
+            template = self.env.ref("instance_request.instance_request_creation")
+            template.send_mail(record.id,
+                               email_values={'email_to': record.create_uid.email, 'email_from': self.env.user.email})
 
-    @api.model
-    def update_sub(self):
-        all_records = self.search([])
-        for record in all_records:
-            jours_restants = (record.limit_date - datetime.date.today()).days
-            if jours_restants <= 5 and record.state == "brouillon":
-                record.state = "soumise"
+    # @api.model
+    # def update_sub(self):
+    #     all_records = self.search([])
+    #     for record in all_records:
+    #         jours_restants = (record.limit_date - datetime.date.today()).days
+    #         if jours_restants <= 5 and record.state == "brouillon":
+    #             record.state = "soumise"
+
+
