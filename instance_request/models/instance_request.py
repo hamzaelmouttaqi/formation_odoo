@@ -1,6 +1,7 @@
 # -*- coding utf-8 -*-
 
 from odoo import models, fields ,api
+from odoo.exceptions import ValidationError
 import datetime
 
 class InstanceRequest(models.Model):
@@ -10,9 +11,9 @@ class InstanceRequest(models.Model):
 
     name = fields.Char(string='Designation',tracking=True)
     adress_ip = fields.Char(string='Adress Ip')
-    _sql_constraints = [
-        ("adress_ip_unique", "unique(adress_ip)", "adress ip should be unique choose another one")
-    ]
+    # _sql_constraints = [
+    #     ("adress_ip_unique", "unique(adress_ip)", "adress ip should be unique choose another one")
+    # ]
     cpu = fields.Char(string='cpu')
     ram = fields.Char(string='ram')
     disk = fields.Char(string='disk')
@@ -28,9 +29,30 @@ class InstanceRequest(models.Model):
         default='brouillon',tracking=True)
     limit_date = fields.Date(string='Limit Date',tracking=True)
     treat_date=fields.Date(string='Treat Date')
-    treat_duration=fields.Float(string='Treat Duration')
-    odoo_version_id=fields.Many2one('odoo.version',string='Version odoo')
-    odoo_version_ids = fields.Many2many('odoo.version',string='odoo Versions')
+    treat_duration=fields.Integer(string='Treat Duration',compute='_compute_treat_duration', store=1)
+
+
+    odoo_id=fields.Many2one('odoo.version',string='Version odoo')
+    partner_id = fields.Many2one('res.partner', string="Contact")
+    tl_id = fields.Many2one('hr.employee', string='Employee')
+    tl_user_id = fields.Many2one('res.users',string='Users')
+    perimeters_ids = fields.Many2many('instance.perimetre',string='Perimeters')
+
+    nb_perimeters= fields.Integer(string="Nombre Perimeters",compute='_compute_nb_perim')
+
+    @api.depends('treat_date')
+    def _compute_treat_duration(self):
+        for rec in self:
+            if rec.treat_date:
+                rec.treat_duration = (rec.treat_date - datetime.date.today()).days
+            else:
+                rec.treat_duration=0
+
+    @api.depends('perimeters_ids')
+    def _compute_nb_perim(self):
+        for rec in self:
+            rec.nb_perimeters = len(rec.perimeters_ids)
+
 
     def action_brouillon(self):
         for record in self:
@@ -96,10 +118,10 @@ class InstanceRequest(models.Model):
     def onchange_limit_date(self):
         if self.limit_date and self.limit_date < fields.Date.today():
             self.limit_date = False
-            return {'warning': {'title': _('Error'), 'message': _('You cannot set a deadline in the past.')}}
+            raise ValidationError('You cannot set a deadline in the past.')
     def unlink(self):
         if self.state != 'brouillon':
-            raise UserWarning('change the state to draft')
+            raise ValidationError('change the state to draft')
         res = super().unlink()
         return res
 
@@ -116,3 +138,9 @@ class InstanceRequest(models.Model):
         return res
 
 
+    @api.constrains('adress_ip')
+    def check_adress(self):
+        for record in self :
+            adress = self.env['instance.request'].search([('adress_ip','=',record.adress_ip),('id','!=',record.id)])
+            if adress :
+                raise ValidationError('change the adress_ip')

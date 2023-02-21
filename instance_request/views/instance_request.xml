@@ -9,6 +9,11 @@
                     <field name="name"/>
                     <field name="adress_ip"/>
                     <field name="state"/>
+                    <field name="odoo_id"/>
+                    <field name="tl_id"/>
+                    <field name="tl_user_id"></field>
+                    <field name="perimeters_ids" />
+                    <field name="treat_duration"  />
                 </search>
             </field>
         </record>
@@ -19,10 +24,14 @@
                 <tree >
                     <field name="create_date"/>
                     <field name="name"/>
-                    <field name="odoo_version_id" />
-                    <field name="odoo_version_ids" />
+                    <field name="odoo_id" />
+
+                    <field name="tl_id"/>
+                    <field name="tl_user_id"></field>
+                    <field name="perimeters_ids" widget="many2many_tags" options="{'color_field': 'id'}"/>
                     <field name="adress_ip"/>
                     <field name="limit_date"/>
+                    <field name="treat_duration" />
                     <field name="cpu"/>
                     <field name="ram"/>
                     <field name="disk"/>
@@ -59,11 +68,17 @@
                                 <field name="adress_ip" />
                             </group>
                             <group>
-                                <field name="odoo_version_id" />
-                                <field name="odoo_version_ids" />
+                                <field name="odoo_id" />
+                                <field name="tl_id" />
+                                <field name="tl_user_id"></field>
+                                <field name="perimeters_ids" widget="many2many_tags" options="{'color_field': 'id'}"/>
+                                <field name="nb_perimeters" />
+                            </group>
+                            <group>
+
                                 <field name="limit_date" attrs="{'readonly':[('state','=','traitee')]}" required="1"/>
-                                 <field name="treat_date" attrs="{'readonly':[('state','=','traitee')]}"></field>
-                                <field name="treat_duration" attrs="{'readonly':[('state','=','traitee')]}" />
+                                <field name="treat_date" attrs="{'readonly':[('state','=','traitee')]}"></field>
+                                <field name="treat_duration"   readonly="1" >Jours</field>
                             </group>
 
 

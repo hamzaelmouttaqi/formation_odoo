@@ -1,6 +1,6 @@
 from odoo import models, fields
 
-class InstanceRequest(models.Model):
+class OdooVersion(models.Model):
     _name = 'odoo.version'
     _description = 'odoo version'
 
