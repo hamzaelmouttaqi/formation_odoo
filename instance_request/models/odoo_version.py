@@ -4,4 +4,4 @@ class InstanceRequest(models.Model):
     _name = 'odoo.version'
     _description = 'odoo version'
 
-    version = fields.Char(string='Version')
+    name = fields.Char(string='Version')

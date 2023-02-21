@@ -10,23 +10,39 @@
             <field name="limit_date">2023-03-15</field>
         </record>
          <record model='odoo.version' id="odoo_version_14">
-            <field name="version">14.0</field>
+            <field name="name">14.0</field>
         </record>
         <record model='odoo.version' id="odoo_version_15">
-            <field name="version">15.0</field>
+            <field name="name">15.0</field>
         </record>
         <record model='odoo.version' id="odoo_version_16">
-            <field name="version">16.0</field>
+            <field name="name">16.0</field>
         </record>
-<!--        <record id="ir_cron_update_state" model="ir.cron">-->
-<!--            <field name="name">Update Instance Request</field>-->
-<!--            <field name="model_id" ref="instance_request.model_instance_request" />-->
-<!--            <field name="interval_number">1</field>-->
-<!--            <field name="interval_type">days</field>-->
-<!--            <field name="numbercall">-1</field>-->
-<!--            <field name="state">code</field>-->
-<!--            <field name="code">model.update_sub()</field>-->
-<!--        </record>-->
+        <record model='instance.perimetre' id="instance_perimetre_achats">
+            <field name="name">Achats</field>
+        </record>
+        <record model='instance.perimetre' id="instance_perimetre_ventes">
+            <field name="name">Ventes</field>
+        </record>
+        <record model='instance.perimetre' id="instance_perimetre_documents">
+            <field name="name">Documents</field>
+        </record>
+        <record model='instance.perimetre' id="instance_perimetre_projets">
+            <field name="name">Projets</field>
+        </record>
+        <record model='instance.perimetre' id="instance_perimetre_agriculture">
+            <field name="name">Agriculture</field>
+        </record>
+
+        <record id="ir_cron_update_state" model="ir.cron">
+            <field name="name">Update Instance Request</field>
+            <field name="model_id" ref="instance_request.model_instance_request" />
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="state">code</field>
+            <field name="code">model.update_sub()</field>
+        </record>
     </data>
 
 

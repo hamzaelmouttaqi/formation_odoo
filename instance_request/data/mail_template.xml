@@ -19,7 +19,7 @@
                         <t t-out="object.name"/>
                     </strong>
                     a bien été crée. Elle est accessible sur le lien
-                    <span t-out="object.address_ip"/>
+                    <span t-out="object.adress_ip"/>
                     <br/>
                     <br/>
                     Cordialement
