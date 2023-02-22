@@ -37,7 +37,6 @@ class InstanceRequest(models.Model):
     tl_id = fields.Many2one('hr.employee', string='Employee')
     tl_user_id = fields.Many2one('res.users',string='Users')
     perimeters_ids = fields.Many2many('instance.perimetre',string='Perimeters')
-
     nb_perimeters= fields.Integer(string="Nombre Perimeters",compute='_compute_nb_perim')
 
     @api.depends('treat_date')
@@ -120,8 +119,9 @@ class InstanceRequest(models.Model):
             self.limit_date = False
             raise ValidationError('You cannot set a deadline in the past.')
     def unlink(self):
-        if self.state != 'brouillon':
-            raise ValidationError('change the state to draft')
+        for rec in self :
+            if rec.state != 'brouillon':
+                raise ValidationError('change the state to draft')
         res = super().unlink()
         return res
 
@@ -144,3 +144,7 @@ class InstanceRequest(models.Model):
             adress = self.env['instance.request'].search([('adress_ip','=',record.adress_ip),('id','!=',record.id)])
             if adress :
                 raise ValidationError('change the adress_ip')
+
+
+
+

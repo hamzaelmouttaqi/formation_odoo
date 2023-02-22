@@ -14,6 +14,23 @@
                     <field name="tl_user_id"></field>
                     <field name="perimeters_ids" />
                     <field name="treat_duration"  />
+
+                    <filter name="instance_draft" string="Draft"
+                            domain="[('state', '=', 'brouillon')]"/>
+                    <filter name="instance_draft" string="Submit"
+                            domain="[('state', '=', 'soumise')]"/>
+                    <filter name="instance_draft" string="In Progress"
+                            domain="[('state', '=', 'en_traitement')]"/>
+                    <filter name="instance_done" string="Done"
+                            domain="[('state', '=', 'traitee')]"/>
+                    <separator/>
+                    <filter name="instance_mine" string="My Demand"
+                            domain="[('create_uid', '=', uid)]"/>
+
+                    <filter name="groupby_state" string="State" context="{'group_by': 'state'}"/>
+                    <filter name="groupby_tl_id" string="TL" context="{'group_by': 'tl_id'}"/>
+                    <filter name="groupby_odoo_id" string="Odoo Version" context="{'group_by': 'odoo_id'}"/>
+
                 </search>
             </field>
         </record>
@@ -94,15 +111,110 @@
                 </form>
             </field>
         </record>
+        <record model="ir.ui.view" id="instance_request_kanban">
+            <field name="name">Demande de creation d'instance</field>
+            <field name="model">instance.request</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile" sample="1" default_group_by="state">
 
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                <div class="row mb4">
+                                    <div class="col-12">
+
+                                        <field name="name"/>
+                                        <br/>
+                                        <field name="odoo_id"/>
+                                        <br/>
+                                        <field name="tl_id"/><br/>
+                                        <field name="tl_user_id"></field>
+                                        <field name="perimeters_ids" widget="many2many_tags"
+                                               options="{'color_field': 'id'}"/><br/>
+                                        <field name="adress_ip"/><br/>
+                                        <field name="limit_date"/><br/>
+                                        <field name="treat_duration"/><br/>
+                                        <field name="cpu"/><br/>
+                                        <field name="ram"/><br/>
+                                        <field name="disk"/><br/>
+                                        <field name="state"/><br/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+
+            </field>
+        </record>
+        <record id="instance_request_gantt" model="ir.ui.view">
+            <field name="name">Demande de creation d'instance</field>
+            <field name="model">instance.request</field>
+
+            <field name="arch" type="xml">
+                <gantt
+
+
+                        date_start="create_date"
+                        date_stop="limit_date"
+                        sample="1"
+                        pill_label="True">
+                    <field name="name"/>
+                    <templates>
+                        <div t-name="gantt-popover">
+                            <div id="allocated_hours"><strong>Allocated Time — </strong> <t
+                                    t-esc="allocatedHoursFormatted"/> <t t-if="resource_type == 'user'"> (<t
+                                    t-esc="allocatedPercentageFormatted"/>%)</t></div>
+                            <div><t t-esc="userTimezoneStartDate.format('l LT ')"/><i class="fa fa-long-arrow-right"
+                                                                                      title="Arrow"/><t
+                                    t-esc="userTimezoneStopDate.format(' l LT')"/></div>
+                            <p class="mt-2 mb-0" t-if="name"><t
+                                    t-esc="name.slice(0, 200) + (name.length > 200?'…':'')"/></p>
+                            <p t-if="publication_warning and !overlap_slot_count" class="text-warning mt-2 mb-0">
+                                Some changes were made since this shift was published.
+                            </p>
+                            <p t-if="overlap_slot_count" class="text-danger mt-2 mb-0">
+                                <t t-esc="overlap_slot_count"/> other shift(s) in conflict.
+                            </p>
+                        </div>
+                    </templates>
+                </gantt>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="instance_request_pivot">
+            <field name="name">Demande de creation d'instance</field>
+            <field name="model">instance.request</field>
+            <field name="arch" type="xml">
+                <pivot string="Instance pivot">
+                    <field name="name" type="col"/>
+                    <field name="limit_date" type="row"/>
+                </pivot>
+            </field>
+        </record>
+         <record model="ir.ui.view" id="instance_request_graph">
+            <field name="name">Demande de creation d'instance</field>
+            <field name="model">instance.request</field>
+            <field name="arch" type="xml">
+                <graph string="Instance graph">
+                    <field name="create_date"/>
+                </graph>
+            </field>
+        </record>
         <!-- actions opening views on models -->
 
         <record model="ir.actions.act_window" id="instance_request_action">
             <field name="name">Instence Request</field>
             <field name="res_model">instance.request</field>
             <field name="domain">[('create_uid','=',uid)]</field>
-            <field name="context">{'default_cpu':'12 ','default_adress_ip':'190.12.0.1'}</field>
-            <field name="view_mode">tree,form</field>
+            <field name="context">{'default_cpu':'Intel Core i9','default_adress_ip':'190.12.0.1'
+                                   ,'default_ram':'16 GO','default_disk':'SSD'
+                                   ,'default_url':'www.test.com','default_name':'inst'}</field>
+            <field name="view_mode">tree,form,kanban,pivot,gantt</field>
+        </record>
+        <record model="ir.actions.act_window" id="instance_request_action_graph">
+            <field name="name">Instence Request GRAPH</field>
+            <field name="res_model">instance.request</field>
+            <field name="view_mode">graph</field>
         </record>
         <record id="instance_request_action_server" model="ir.actions.server">
             <field name="name">Traitee</field>
@@ -118,7 +230,7 @@
             <field name="model_id" ref="instance_request.model_instance_request"/>
             <field name="binding_model_id" ref="instance_request.model_instance_request"/>
             <field name="state">code</field>
-            <field name="code">records.action_draft()</field>
+            <field name="code">records.action_brouillon()</field>
         </record>
         <record model="ir.actions.act_window" id="instance_request_action_a_valide">
             <field name="name">A Valider</field>
@@ -126,12 +238,12 @@
             <field name="domain">['|',
                 ('state','=','soumise'),('state','=','en_traitement')]
             </field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,form,kanban,graph,pivot</field>
         </record>
         <record model="ir.actions.act_window" id="instance_request_action_all">
             <field name="name">Toutes les demandes</field>
             <field name="res_model">instance.request</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,form,kanban,graph,pivot</field>
         </record>
 
 
@@ -156,9 +268,12 @@
             </menuitem>
             <menuitem name="Analyse"
                       id="analyse_id"
-                      action="instance_request_action"
                       groups="instance_request.group_instance_request_user"
-            />
+            >
+                 <menuitem
+                         id="graph_id" action="instance_request_action_graph"/>
+            </menuitem>
+
             <menuitem name="Configuration"
                       id="menu_configuration"
                       groups="instance_request.group_instance_request_admin"

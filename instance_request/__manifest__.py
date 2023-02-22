@@ -6,13 +6,13 @@
     'description': """
 Instance Request """,
     'website': 'https://www.odoo.com/app/instance_request',
-    'depends': ['base','mail','sale_management','contacts','hr'],
+    'depends': ['base','mail','sale_management','sale','contacts','hr'],
     'data': ['data/data.xml',
              'data/mail_template.xml',
              'data/activity_a_traitee.xml',
              'security/security.xml',
              'security/ir.model.access.csv',
-
+             'views/hr_employee.xml',
              'views/instance_request.xml',
              'views/odoo_version.xml',
              'views/perimetres.xml',
