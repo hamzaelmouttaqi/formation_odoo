@@ -16,7 +16,9 @@ Instance Request """,
              'views/instance_request.xml',
              'views/odoo_version.xml',
              'views/perimetres.xml',
-             'views/devis.xml'
+             'views/devis.xml',
+             'wizards/instance_wizard.xml',
+             'reports/insatance_request_report.xml'
 
              ],
     'application': True,

@@ -28,18 +28,20 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="version_odoo_id"/>
+                    <field name="insatnce_id"/>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="before">
+                    <header>
+                        <button name="%(instance_request.instance_wizard_launch)d"
+                                class="oe_highlight"
+                                type="action" string="Create Instance"/>
+                    </header>
                 </xpath>
             </field>
         </record>
 
 
-<!--                <xpath expr="//field[@name='display_name']" position="before">-->
-<!--                    <header>-->
-<!--                        <button name="%(instance_request.instance_wizard_launch)d"-->
-<!--                                class="oe_highlight"-->
-<!--                                type="action" string="Affect"/>-->
-<!--                    </header>-->
-<!--                </xpath>-->
+
 
 
     </data>

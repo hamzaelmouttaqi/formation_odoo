@@ -53,6 +53,7 @@
                     <field name="ram"/>
                     <field name="disk"/>
                     <field name="state"/>
+                   
                 </tree>
             </field>
         </record>
@@ -206,8 +207,8 @@
             <field name="name">Instence Request</field>
             <field name="res_model">instance.request</field>
             <field name="domain">[('create_uid','=',uid)]</field>
-            <field name="context">{'default_cpu':'Intel Core i9','default_adress_ip':'190.12.0.1'
-                                   ,'default_ram':'16 GO','default_disk':'SSD'
+            <field name="context">{'default_cpu':'2','default_adress_ip':'190.12.0.1'
+                                   ,'default_ram':'16','default_disk':'256'
                                    ,'default_url':'www.test.com','default_name':'inst'}</field>
             <field name="view_mode">tree,form,kanban,pivot,gantt</field>
         </record>

@@ -1,0 +1,48 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="instance_wizard_form">
+            <field name="name">Demande d affectation de Odoo version</field>
+            <field name="model">instance.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Create Instance">
+                    <!--                    create="false" duplicate="false"-->
+                    <group>
+                        <group>
+                            <field name="tl_id" string="TL" required="1"/>
+                            <field name="devis_ids" widget="many2many_tags" options="{'color_field': 'id'}"/>
+
+                        </group>
+                        <group>
+                            <field name="cpu" />
+                            <field name="disk"></field>
+                            <field name="ram"></field>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button
+                                name="apply_instance"
+                                string="Apply"
+                                class="btn-primary"
+                                type="object"
+                        />
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="instance_wizard_launch" model="ir.actions.act_window">
+            <field name="name">Create Instance</field>
+            <field name="res_model">instance.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{'default_devis_ids': active_ids}</field>
+            <field name="binding_model_id" ref="sale.model_sale_order"/>
+        </record>
+
+
+
+    </data>
+</odoo>

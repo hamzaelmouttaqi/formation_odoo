@@ -14,9 +14,9 @@ class InstanceRequest(models.Model):
     # _sql_constraints = [
     #     ("adress_ip_unique", "unique(adress_ip)", "adress ip should be unique choose another one")
     # ]
-    cpu = fields.Char(string='cpu')
-    ram = fields.Char(string='ram')
-    disk = fields.Char(string='disk')
+    cpu = fields.Integer(string='cpu')
+    ram = fields.Integer(string='ram')
+    disk = fields.Integer(string='disk')
     url = fields.Char(string='url')
     active = fields.Boolean(string='Is_Active',default='True')
     state = fields.Selection(
@@ -38,6 +38,7 @@ class InstanceRequest(models.Model):
     tl_user_id = fields.Many2one('res.users',string='Users')
     perimeters_ids = fields.Many2many('instance.perimetre',string='Perimeters')
     nb_perimeters= fields.Integer(string="Nombre Perimeters",compute='_compute_nb_perim')
+    devis_ids = fields.One2many('sale.order','insatnce_id', string="Devis")
 
     @api.depends('treat_date')
     def _compute_treat_duration(self):
@@ -145,6 +146,13 @@ class InstanceRequest(models.Model):
             if adress :
                 raise ValidationError('change the adress_ip')
 
+    def open_insatance_view(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Instance View',
+            'res_model': 'instance.request',
+            'view_mode': 'list',
 
+        }
 
 
