@@ -1,0 +1,46 @@
+<odoo>
+    <data>
+        <record id="view_sale_oder_inherit_search" model="ir.ui.view">
+            <field name="name">sale.order.search.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="arch" type="xml">
+               <filter name="filter_create_date" position="after">
+                 <filter name="groupby_odooversion" string="Version" context="{'group_by': 'version_odoo_id'}"/>
+               </filter>
+            </field>
+        </record>
+        <record id="view_sale_oder_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position='after'>
+                    <field name="version_odoo_id" required="1"/>
+                </field>
+
+            </field>
+        </record>
+        <record id="view_sale_oder_inherit_list" model="ir.ui.view">
+            <field name="name">sale.order.list.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="version_odoo_id"/>
+                </xpath>
+            </field>
+        </record>
+
+
+<!--                <xpath expr="//field[@name='display_name']" position="before">-->
+<!--                    <header>-->
+<!--                        <button name="%(instance_request.instance_wizard_launch)d"-->
+<!--                                class="oe_highlight"-->
+<!--                                type="action" string="Affect"/>-->
+<!--                    </header>-->
+<!--                </xpath>-->
+
+
+    </data>
+</odoo>
