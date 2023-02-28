@@ -12,12 +12,12 @@ Instance Request """,
              'data/activity_a_traitee.xml',
              'security/security.xml',
              'security/ir.model.access.csv',
+             'wizards/instance_wizard.xml',
              'views/hr_employee.xml',
              'views/instance_request.xml',
              'views/odoo_version.xml',
              'views/perimetres.xml',
              'views/devis.xml',
-             'wizards/instance_wizard.xml',
              'reports/insatance_request_report.xml'
 
              ],
