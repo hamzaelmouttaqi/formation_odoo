@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
-        <template id="instance_request_tmplt">
+        <template id="instance_request_template">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="doc">
                     <t t-call="web.external_layout">
@@ -44,14 +44,10 @@
                                     </tr>
                                 </thead>
                                 <tbody class="sale_tbody">
-
                                     <t t-foreach="doc.perimeters_ids" t-as="line">
                                         <tr>
                                             <td name="td_name">
                                                 <span t-field="line.name"/>
-                                            </td>
-                                             <td name="td_name">
-                                                <span t-field="line.create_uid"/>
                                             </td>
                                         </tr>
                                     </t>
@@ -77,7 +73,7 @@
                 </t>
             </t>
         </template>
-        <template id="instance_request_tmplt_inherit" inherit_id="instance_request.instance_request_tmplt">
+        <template id="instance_request_template_inherit" inherit_id="instance_request.instance_request_template">
             <xpath expr="//div[@name='limit_date']" position="attributes">
                 <attribute name="t-if">False</attribute>
             </xpath>
@@ -87,7 +83,7 @@
             <field name="name">Instance request</field>
             <field name="model">instance.request</field>
             <field name="report_type">qweb-pdf</field>
-            <field name="report_name">instance_request.instance_request_tmplt</field>
+            <field name="report_name">instance_request.instance_request_template</field>
             <field name="report_file">Instance request</field>
             <field name="attachment_use" eval="True"/>
             <field name="attachment">(object.name)</field>

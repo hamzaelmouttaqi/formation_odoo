@@ -35,7 +35,7 @@ class InstanceRequest(models.Model):
     odoo_id=fields.Many2one('odoo.version',string='Version odoo')
     partner_id = fields.Many2one('res.partner', string="Contact")
     tl_id = fields.Many2one('hr.employee', string='Employee')
-    tl_user_id = fields.Many2one('res.users',string='Users')
+    tl_user_id =  fields.Many2one(related="tl_id.user_id")
     perimeters_ids = fields.Many2many('instance.perimetre',string='Perimeters')
     nb_perimeters= fields.Integer(string="Nombre Perimeters",compute='_compute_nb_perim')
     devis_ids = fields.One2many('sale.order','insatnce_id', string="Devis")
@@ -152,7 +152,6 @@ class InstanceRequest(models.Model):
             'name': 'Instance View',
             'res_model': 'instance.request',
             'view_mode': 'list',
-
         }
 
 

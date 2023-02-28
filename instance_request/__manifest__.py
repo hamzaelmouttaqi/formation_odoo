@@ -6,7 +6,7 @@
     'description': """
 Instance Request """,
     'website': 'https://www.odoo.com/app/instance_request',
-    'depends': ['base','mail','sale_management','sale','contacts','hr'],
+    'depends': ['base','mail','sale_management','sale','contacts','hr','website'],
     'data': ['data/data.xml',
              'data/mail_template.xml',
              'data/activity_a_traitee.xml',

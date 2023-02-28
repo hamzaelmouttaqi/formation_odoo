@@ -8,9 +8,9 @@ class InstanceWizard(models.TransientModel):
     _description = 'Instance Wizard'
 
     devis_ids = fields.Many2many('sale.order', string="Devis")
-    cpu = fields.Char(string='cpu')
-    ram = fields.Char(string='ram')
-    disk = fields.Char(string='disk')
+    cpu = fields.Integer(string='cpu')
+    ram = fields.Integer(string='ram')
+    disk = fields.Integer(string='disk')
     tl_id = fields.Many2one('hr.employee', string='Employee')
 
     # def apply_odoo_version(self):
